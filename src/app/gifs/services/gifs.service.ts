@@ -7,19 +7,27 @@ import { Gif, SearchGifsResponse } from '../interface/gifs.interfaces';
 })
 export class GifsService {
 
-  constructor(private http: HttpClient) { }
-
   private apiKey: string = 'Fm1VDmxbiArxwi7PdCb6MVq3y1AY1GUL';
   private _historial: string[] = [];
-
   public resultados: Gif[] = [];
+
+
+  get historial() { return [...this._historial] }
+
+
   
+  constructor(private http: HttpClient) {
 
-  get historial() {
+    if (localStorage.getItem('historial')) {
 
-    return [...this._historial];
+      // Con el signo de admiracion le aviso a angular que confie en mi, que es valido lo que estoy haciendo
+      this._historial = JSON.parse(localStorage.getItem('historial')!);
+
+      console.log(this._historial);
+    }
 
   }
+
 
   buscarGifs(query: string) {
 
@@ -30,12 +38,15 @@ export class GifsService {
       this._historial.unshift(query);
 
       this._historial = this._historial.splice(0, 10);
+
+      localStorage.setItem('historial', JSON.stringify(this._historial));
+
     }
 
 
     this.http.get<SearchGifsResponse>(`https://api.giphy.com/v1/gifs/search?api_key=${this.apiKey}&q=${query}z&limit=10`)
-      .subscribe(( resp ) => {
-        
+      .subscribe((resp) => {
+
         console.log(resp.data);
 
         this.resultados = resp.data;
