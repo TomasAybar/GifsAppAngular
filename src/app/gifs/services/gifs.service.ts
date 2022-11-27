@@ -15,7 +15,7 @@ export class GifsService {
   get historial() { return [...this._historial] }
 
 
-  
+
   constructor(private http: HttpClient) {
 
     if (localStorage.getItem('historial')) {
@@ -24,6 +24,13 @@ export class GifsService {
       this._historial = JSON.parse(localStorage.getItem('historial')!);
 
       console.log(this._historial);
+    }
+
+    if (localStorage.getItem('resultados')) {
+
+      this.resultados = JSON.parse(localStorage.getItem('resultados')!);
+
+      console.log(this.resultados);
     }
 
   }
@@ -52,6 +59,8 @@ export class GifsService {
         this.resultados = resp.data;
 
         console.log(this.resultados);
+
+        localStorage.setItem('resultados', JSON.stringify(this.resultados));
       });
   }
 
