@@ -24,14 +24,12 @@ export class GifsService {
       // Con el signo de admiracion le aviso a angular que confie en mi, que es valido lo que estoy haciendo
       this._historial = JSON.parse(localStorage.getItem('historial')!);
 
-      console.log(this._historial);
     }
 
     if (localStorage.getItem('resultados')) {
 
       this.resultados = JSON.parse(localStorage.getItem('resultados')!);
 
-      console.log(this.resultados);
     }
 
   }
@@ -59,11 +57,7 @@ export class GifsService {
     this.http.get<SearchGifsResponse>(`${this.servicioUrl}/search?`, { params: params })
       .subscribe((resp) => {
 
-        console.log(resp.data);
-
         this.resultados = resp.data;
-
-        console.log(this.resultados);
 
         localStorage.setItem('resultados', JSON.stringify(this.resultados));
       });
